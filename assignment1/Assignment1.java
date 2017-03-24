@@ -21,7 +21,7 @@ public class Assignment1 {
 
     public static void main(String[] args) {
         if(args.length != 2) {
-            System.err.println("Usage: java Assignment [N 값] [Output 경로]");
+            System.err.println("Usage: java Assignment1 [N 값] [Output 경로]");
             return;
         }
 
