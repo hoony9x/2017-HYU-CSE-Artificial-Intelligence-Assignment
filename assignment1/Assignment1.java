@@ -30,8 +30,8 @@ public class Assignment1 {
 
         /* Exception Handling이 필수인 코드라 다음과 같이 작성함. */
         try {
-            /* 파일 열기 */
-            output_printwriter = new PrintWriter(output_path + "/result" + N.toString() + ".txt");
+            /* 파일 열기, Windows 와 Linux 의 path 표현방식 차이로 인해 System.getProperty("file.separator") 사용. */
+            output_printwriter = new PrintWriter(output_path + System.getProperty("file.separator") + "result" + N.toString() + ".txt");
         } catch(FileNotFoundException error) {
             System.err.println("FileNotFoundException");
             return;
