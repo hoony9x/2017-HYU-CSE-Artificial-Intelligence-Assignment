@@ -17,6 +17,7 @@ import java.io.PrintWriter;
 public class Assignment1 {
 
     private static boolean is_finish; /* 각 Search에서 끝났을 때의 경우를 체크하기 위한 것. */
+    private static Integer N;
     private static PrintWriter output_printwriter; /* 파일 출력을 위한 PrintWriter Object */
 
     public static void main(String[] args) {
@@ -25,7 +26,7 @@ public class Assignment1 {
             return;
         }
 
-        Integer N = Integer.parseInt(args[0]); /* N */
+        N = Integer.parseInt(args[0]); /* N */
         String output_path = args[1]; /* output파일이 위치할 경로 */
 
         /* Exception Handling이 필수인 코드라 다음과 같이 작성함. */
@@ -51,7 +52,7 @@ public class Assignment1 {
                 Integer init_Integer = i;
 
                 checklist.add(init_Integer); /* 첫 번째 Column 에서의 row번호를 넣는다. */
-                Assignment1.searchByDFS(N, checklist); /* 다음 Column으로 이동하여 탐색 */
+                Assignment1.searchByDFS(checklist); /* 다음 Column으로 이동하여 탐색 */
                 checklist.remove(init_Integer); /* 첫 번째 Column에 넣었던 row번호를 제거한다. */
             }
 
@@ -72,7 +73,7 @@ public class Assignment1 {
             long start_time = System.nanoTime(); /* 시작 시간 기록 */
 
             /* BFS 탐색을 시작한다. */
-            Assignment1.searchByBFS(N);
+            Assignment1.searchByBFS();
 
             /* 탐색에서 Solution을 찾지 못한 경우. */
             if(!Assignment1.is_finish) {
@@ -101,7 +102,7 @@ public class Assignment1 {
                     Integer init_Integer = i;
 
                     checklist.add(init_Integer);
-                    Assignment1.searchByDFID(N, depth_limit, checklist);
+                    Assignment1.searchByDFID(depth_limit, checklist);
                     checklist.remove(init_Integer);
                 }
             }
@@ -119,7 +120,7 @@ public class Assignment1 {
         output_printwriter.close();
     }
 
-    private static void searchByDFS(int N, ArrayList<Integer> checklist) {
+    private static void searchByDFS(ArrayList<Integer> checklist) {
         if(Assignment1.is_finish) {
             /*
              * 원하는 답을 찾았을 경우 DFS탐색을 중지하기 위해 삽입한 코드.
@@ -153,12 +154,12 @@ public class Assignment1 {
              * 따라서 새로운 row 번호를 넣을 position 값은 checklist.size() 가 된다.
              */
             checklist.add(checklist.size(), i); /* 다음 Column 에서의 row번호를 넣는다. */
-            Assignment1.searchByDFS(N, checklist); /* 다음 Column으로 이동하여 탐색 */
+            Assignment1.searchByDFS(checklist); /* 다음 Column으로 이동하여 탐색 */
             checklist.remove(checklist.size() - 1); /* Column에 넣었던 row번호를 제거한다. */
         }
     }
 
-    private static void searchByBFS(int N) {
+    private static void searchByBFS() {
 
         /* "각 Column 에서 뽑은 row 번호를 저장한 리스트" 를 저장할 Queue 를 선언한다. */
         Queue< ArrayList<Integer> > Q = new LinkedList< ArrayList<Integer> >();
@@ -204,7 +205,9 @@ public class Assignment1 {
 
             for(int i = 0; i < N; i++) {
                 /* 기존 리스트에 다음 Column 에서의 row 번호를 뽑아서 넣는다. */
-                ArrayList<Integer> next_list = (ArrayList<Integer>)recent_list.clone();
+                //ArrayList<Integer> next_list = (ArrayList<Integer>)recent_list.clone();
+                ArrayList<Integer> next_list = new ArrayList<Integer>();
+                next_list.addAll(recent_list);
                 next_list.add(next_list.size(), i);
 
                 /* Q 에 위의 리스트를 넣는다. */
@@ -213,7 +216,7 @@ public class Assignment1 {
         }
     }
 
-    private static void searchByDFID(int N, int depth_limit, ArrayList<Integer> checklist) {
+    private static void searchByDFID(int depth_limit, ArrayList<Integer> checklist) {
         if(Assignment1.is_finish) {
             /*
              * 원하는 답을 찾았을 경우 DFID 탐색을 중지하기 위해 삽입한 코드.
@@ -252,7 +255,7 @@ public class Assignment1 {
              * 따라서 새로운 row 번호를 넣을 position 값은 checklist.size() 가 된다.
              */
             checklist.add(checklist.size(), i); /* 다음 Column 에서의 row번호를 넣는다. */
-            Assignment1.searchByDFID(N, depth_limit, checklist); /* 다음 Column으로 이동하여 탐색 */
+            Assignment1.searchByDFID(depth_limit, checklist); /* 다음 Column으로 이동하여 탐색 */
             checklist.remove(checklist.size() - 1); /* Column에 넣었던 row번호를 제거한다. */
         }
     }
@@ -285,3 +288,4 @@ public class Assignment1 {
         return true;
     }
 }
+
